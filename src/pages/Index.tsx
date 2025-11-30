@@ -5,10 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
+import { QRCodeSVG } from 'qrcode.react';
 
 const Index = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -90,20 +92,47 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold neon-glow neon-cyan">CYBER ARENA</h1>
-            <div className="hidden md:flex gap-6">
-              {['home', 'services', 'equipment', 'tournaments', 'gallery', 'contacts'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="text-sm hover:text-primary transition-colors capitalize"
-                >
-                  {section === 'home' ? 'Главная' : 
-                   section === 'services' ? 'Услуги' :
-                   section === 'equipment' ? 'Оборудование' :
-                   section === 'tournaments' ? 'Турниры' :
-                   section === 'gallery' ? 'Галерея' : 'Контакты'}
-                </button>
-              ))}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex gap-6">
+                {['home', 'services', 'equipment', 'tournaments', 'gallery', 'contacts'].map((section) => (
+                  <button
+                    key={section}
+                    onClick={() => scrollToSection(section)}
+                    className="text-sm hover:text-primary transition-colors capitalize"
+                  >
+                    {section === 'home' ? 'Главная' : 
+                     section === 'services' ? 'Услуги' :
+                     section === 'equipment' ? 'Оборудование' :
+                     section === 'tournaments' ? 'Турниры' :
+                     section === 'gallery' ? 'Галерея' : 'Контакты'}
+                  </button>
+                ))}
+              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary/10">
+                    <Icon name="QrCode" className="w-4 h-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="text-center">QR-код сайта</DialogTitle>
+                  </DialogHeader>
+                  <div className="flex flex-col items-center gap-4 py-4">
+                    <div className="p-4 bg-white rounded-lg">
+                      <QRCodeSVG 
+                        value={window.location.href}
+                        size={256}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+                    <p className="text-sm text-muted-foreground text-center">
+                      Отсканируйте для быстрого перехода на сайт
+                    </p>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
